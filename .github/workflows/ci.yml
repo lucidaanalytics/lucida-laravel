@@ -16,6 +16,8 @@ jobs:
           tools: composer
       # lucida/lucida resolves from Packagist, or from the public source until it is submitted there.
       - run: composer config repositories.lucida-php vcs https://github.com/lucidaanalytics/lucida-php
+      # no release tag exists yet, so alias the branch to the composer.json constraint (CI only; composer.json stays clean)
+      - run: composer require --no-update 'lucida/lucida:dev-main as 0.1.0'
       - run: composer install --no-interaction --prefer-dist
       - run: php -l src/LucidaServiceProvider.php > /dev/null && php -l src/LucidaMiddleware.php > /dev/null
       - run: php tests/run.php
