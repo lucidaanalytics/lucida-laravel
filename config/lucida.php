@@ -26,4 +26,5 @@ return [
     'debug' => env('LUCIDA_DEBUG'),
     'flag_poll_interval' => env('LUCIDA_FLAG_POLL_INTERVAL'),
     'only_evaluate_locally' => env('LUCIDA_ONLY_EVALUATE_LOCALLY'),
+    'fallbacks' => [], // ['flag-key' => value] served (reason "fallback") when a flag read fails
 ];

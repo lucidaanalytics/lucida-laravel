@@ -23,6 +23,9 @@ final class Config
         if (!empty($c['secret_key'])) {
             $args['secretKey'] = (string) $c['secret_key'];
         }
+        if (!empty($c['fallbacks']) && is_array($c['fallbacks'])) {
+            $args['fallbacks'] = $c['fallbacks'];
+        }
         foreach (self::OPTIONS as $key => [$arg, $cast]) {
             if (isset($c[$key])) {
                 $args[$arg] = $cast($c[$key]);
