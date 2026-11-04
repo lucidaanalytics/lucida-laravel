@@ -9,9 +9,6 @@ use Lucida\Client;
 
 final class LucidaMiddleware
 {
-    // shortcut: static per-request state (not Octane-safe), move to a scoped binding if running under Octane.
-    private static ?string $distinctId = null;
-
     public function __construct(private readonly Client $client)
     {
     }
@@ -21,7 +18,6 @@ final class LucidaMiddleware
         $cfg = config('lucida');
         $uid = $request->user()?->getAuthIdentifier();
         $v = Visitor::resolve($uid === null ? null : (string) $uid, $request->cookies->all(), $cfg);
-        self::$distinctId = $v['id'];
         $request->attributes->set('lucida_distinct_id', $v['id']);
         view()->share('lucidaDistinctId', $v['id']);
         $ctx = RequestContext::build($uid === null ? null : (string) $uid, $v['id'], $request->headers->all(), [
@@ -44,9 +40,11 @@ final class LucidaMiddleware
     /** Called from the compiled @lucidaBootstrap directive. */
     public static function bootstrapHtml(): string
     {
-        if (self::$distinctId === null) {
+        // Per-request state lives on the request itself, so nothing survives into the next request under Octane.
+        $id = request()->attributes->get('lucida_distinct_id');
+        if (!is_string($id) || $id === '') {
             return '';
         }
-        return Visitor::bootstrapScript(self::$distinctId, app(Client::class)->getAllFlags(self::$distinctId));
+        return Visitor::bootstrapScript($id, app(Client::class)->getAllFlags($id));
     }
 }

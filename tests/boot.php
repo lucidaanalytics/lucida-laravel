@@ -33,6 +33,8 @@ $names = array_map(fn ($c) => $c->getName(), $r->headers->getCookies());
 $check('consent: id cookie written', in_array('lc_id', $names, true));
 $check('consent: bootstrap script rendered', str_contains($r->getContent(), '<script'));
 $kernel->terminate($req, $r);
+$app->instance('request', Illuminate\Http\Request::create('/bare'));
+$check('no state leaks past a request (Octane)', LucidaMiddleware::bootstrapHtml() === '');
 $check('queue flush listener registered (console)', $app['events']->hasListeners(Illuminate\Queue\Events\JobProcessed::class));
 echo "$ok passed, $fail failed\n";
 exit($fail ? 1 : 0);
