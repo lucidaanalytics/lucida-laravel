@@ -3,7 +3,7 @@
 return [
     'api_key' => env('LUCIDA_API_KEY', ''),
     'secret_key' => env('LUCIDA_SECRET_KEY'),
-    'host' => env('LUCIDA_HOST', 'https://app.lucida.dev'),
+    'host' => env('LUCIDA_HOST', 'https://capture.lucidace.com'),
     'disabled' => (bool) env('LUCIDA_DISABLED', false),
     // Anonymous id cookie; never written unless consent is granted.
     'cookie' => ['name' => 'lc_id', 'max_age_minutes' => 60 * 24 * 365],

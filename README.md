@@ -2,7 +2,7 @@
 
 Laravel wrapper over `lucida/lucida` (`../php`, path repository).
 
-1. `composer require lucida/lucida-laravel`; set `LUCIDA_API_KEY`, `LUCIDA_HOST`, optional `LUCIDA_SECRET_KEY` (local flag evaluation). Publish config: `php artisan vendor:publish --tag=lucida-config`.
+1. Install from GitHub, [lucidaanalytics/lucida-laravel](https://github.com/lucidaanalytics/lucida-laravel), release `v0.1.0` (neither package is on Packagist yet, so both need a `vcs` repository entry; the Packagist install is coming): `composer config repositories.lucida vcs https://github.com/lucidaanalytics/lucida-php && composer config repositories.lucida-laravel vcs https://github.com/lucidaanalytics/lucida-laravel && composer require "lucida/lucida:^0.1" "lucida/lucida-laravel:^0.1"`; set `LUCIDA_API_KEY`, `LUCIDA_HOST`, optional `LUCIDA_SECRET_KEY` (local flag evaluation). Publish config: `php artisan vendor:publish --tag=lucida-config`.
 2. Add `Lucida\Laravel\LucidaMiddleware` to the `web` group. Distinct id = auth user id, else the `lc_id` cookie, which is only written when the consent cookie (`lucida.consent`) grants analytics.
 3. `Lucida::capture($id, 'event')` through the facade. `@lucidaBootstrap` in the layout head emits `window.__LUCIDA_BOOTSTRAP__ = {distinctId, flags}` (script-safe JSON) for the JS SDK `bootstrap` option.
 
